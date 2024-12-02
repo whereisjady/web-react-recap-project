@@ -1,47 +1,43 @@
-import React, { useState } from "react";
+import ColorInput from "../ColorInput/ColorInput";
+import "./ColorForm.css";
 
-export default function ColorForm({ onAddColor }) {
-  const [name, setName] = useState("");
-  const [color, setColor] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name || !color) {
-      alert("Please fill out both fields!");
-      return;
-    }
-
-    // Pass the new color data to the parent
-    onAddColor({ name, color });
-
-    // Reset form fields
-    setName("");
-    setColor("");
-  };
+export default function ColorForm({
+  onSubmitColor,
+  initialData = { role: "some color", hex: "#123456", contrastText: "#ffffff" },
+}) {
+  function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData);
+    onSubmitColor(data);
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="color-form">
-      <div>
-        <label htmlFor="color-name">Color Name:</label>
+    <form className="color-form" onSubmit={handleSubmit}>
+      <label htmlFor="role">
+        Role:
+        <br />
         <input
-          id="color-name"
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter color name"
+          id="role"
+          name="role"
+          defaultValue={initialData.role}
         />
-      </div>
-      <div>
-        <label htmlFor="color-code">Color Code:</label>
-        <input
-          id="color-code"
-          type="text"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-          placeholder="Enter color code (e.g., #ff0000)"
-        />
-      </div>
-      <button type="submit">Add Color</button>
+      </label>
+      <br />
+      <label htmlFor="hex">
+        Hex:
+        <br />
+        <ColorInput id="hex" defaultValue={initialData.hex} />
+      </label>
+      <br />
+      <label htmlFor="contrastText">
+        Contrast Text:
+        <br />
+        <ColorInput id="contrastText" defaultValue={initialData.contrastText} />
+      </label>
+      <br />
+      <button>Add color</button>
     </form>
   );
 }
