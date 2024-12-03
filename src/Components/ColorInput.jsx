@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function ColorInput({ id, defaultValue }) {
+export default function ColorInput({ id, defaultValue }) {
   const [inputValue, setInputValue] = useState(defaultValue);
 
   function handleColorChange(event) {
