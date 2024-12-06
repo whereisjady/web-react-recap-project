@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ColorInput = ({ id }) => {
+const ColorInput = ({ id, color }) => {
   const [inputValue, setInputValue] = useState();
   function handleInputChange(event) {
     setInputValue(event.target.value);
@@ -15,6 +15,7 @@ const ColorInput = ({ id }) => {
         type="text"
         name={id}
         placeholder="#123456"
+        defaultValue={color || ""}
       />
       <input
         onChange={handleInputChange}
@@ -23,6 +24,7 @@ const ColorInput = ({ id }) => {
         type="color"
         name={id}
         placeholder="#123456"
+        defaultValue={color || ""}
       />
     </div>
   );
