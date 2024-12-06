@@ -1,9 +1,29 @@
 import "./Color.css";
 import { useState } from "react";
 
-export default function Color({ color, handleDeleteColor }) {
+export default function Color({
+  color,
+  handleDeleteColor,
+  onEdit,
+  onSave,
+  onCancel,
+  isEditing,
+}) {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
+  // edit
+  if (isEditing) {
+    return (
+      <div className="color-card">
+        <ColorForm
+          initialData={color}
+          onSubmitColor={onSave}
+          buttonText="Save"
+        />
+        <button onClick={onCancel}>Cancel</button>
+      </div>
+    );
+  }
   return (
     <div
       className="color-card"
@@ -24,7 +44,8 @@ export default function Color({ color, handleDeleteColor }) {
           </button>
           <button onClick={() => setConfirmDelete(null)}>Cancel</button>
         </div>
-      )}
+      )}{" "}
+      <button onClick={onEdit}>Edit</button>
     </div>
   );
 }
