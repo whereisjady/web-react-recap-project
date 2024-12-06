@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function App() {
   const [colors, setColors] = useState(initialColors);
+  const [editColor, setEditColor] = useState(null);
 
   // add a color
   function addColor(myColor) {
@@ -20,20 +21,38 @@ function App() {
     );
   }
 
+  // save edited color
+  function handleEditColor(updatedColor) {
+    setColors((prevColors) =>
+      prevColors.map((color) =>
+        color.id === updatedColor.id ? updatedColor : color
+      )
+    );
+    setEditColor(null); // Exit edit mode
+  }
+
+  // cancel edited color
+  function handleCancelEdit() {
+    setEditColor(null);
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
 
-      <ColorForm onAddColor={addColor} />
-      {colors.map((color) => {
-        return (
-          <Color
-            key={color.id}
-            color={color}
-            handleDeleteColor={handleDeleteColor}
-          />
-        );
-      })}
+      <ColorForm onAddColor={addColor} buttonText="Add Color" />
+
+      {colors.map((color) => (
+        <Color
+          key={color.id}
+          color={color}
+          handleDeleteColor={handleDeleteColor}
+          onEdit={() => setEditColor(color.id)}
+          onSave={handleEditColor}
+          onCancel={handleCancelEdit}
+          isEditing={editColor === color.id}
+        />
+      ))}
     </>
   );
 }
