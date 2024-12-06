@@ -1,5 +1,6 @@
 import "./Color.css";
 import { useState } from "react";
+import ColorForm from "../ColorForm/ColorForm";
 
 export default function Color({
   color,
@@ -11,19 +12,6 @@ export default function Color({
 }) {
   const [confirmDelete, setConfirmDelete] = useState(null);
 
-  // edit
-  if (isEditing) {
-    return (
-      <div className="color-card">
-        <ColorForm
-          initialData={color}
-          onSubmitColor={onSave}
-          buttonText="Save"
-        />
-        <button onClick={onCancel}>Cancel</button>
-      </div>
-    );
-  }
   return (
     <div
       className="color-card"
@@ -35,6 +23,12 @@ export default function Color({
       <h3 className="color-card-headline">{color.hex}</h3>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
+      {isEditing && (
+        <div className="color-card">
+          <ColorForm color={color} onSubmitColor={onSave} buttonText="Save" />
+          <button onClick={onCancel}>Cancel</button>
+        </div>
+      )}
       <button onClick={() => setConfirmDelete(color.id)}>Delete</button>
       {confirmDelete && (
         <div className="color-card-highlight">
